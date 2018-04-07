@@ -1,17 +1,12 @@
+export const up = (knex, Promise) => Promise.all([
+  knex.schema.createTable('users', function(table) {
+    table.increments('id').primary();
+    table.string('email');
+    table.string('password');
+    table.timestamps(true, true);
+  })
+]);
 
-exports.up = function(knex, Promise) {
-  return Promise.all([
-    knex.schema.createTable('users', function(table) {
-      table.increments('id').primary();
-      table.string('email');
-      table.string('password');
-      table.timestamps(true, true);
-    })
-  ]);
-};
-
-exports.down = function(knex, Promise) {
-  return Promise.all([
-    knex.schema.dropTable('users')
-  ]);
-};
+export const down = (knex, Promise) => Promise.all([
+  knex.schema.dropTable('users')
+]);
