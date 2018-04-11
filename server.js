@@ -25,7 +25,6 @@ app.post('/api/v1/users/new', (request, response) => {
         });
     }
   }
-
   database('users').insert(user, 'id')
     .then(user => {
       response.status(201).json({ id: user[0] })
@@ -43,7 +42,6 @@ app.post('/api/v1/users/signIn', (request, response) => {
         .send({ error: `Expected ${requiredParameter} parameter missing.` });
     }
   }
-
   database('users')
     .where('email', signInParams.email)
     .andWhere('password', signInParams.password)
@@ -85,7 +83,6 @@ app.post('/api/v1/items/new', (request, response) => {
         .send({ error: `Expected ${requiredParameter} parameter missing.` });
     }
   }
-  console.log(item);
   const { name, description, reward, date, status, userId, location } = item;
   const formattedItem = {
     name,
@@ -105,6 +102,51 @@ app.post('/api/v1/items/new', (request, response) => {
     })
 });
 
+app.post('/api/v1/items', (request, response) => {
+  const user = request.body;
+  if (!user.id) {
+    return response.status(422)
+      .send({ error: 'must provide a user id' });
+  }
+  database('items').where('user_id', user.id)
+    .then(items => items.map(item => ({
+      name: item.name,
+      description: item.description,
+      date: item.date,
+      status: item.status,
+      reward: item.reward,
+      locationId: item.location_id,
+      itemId: item.id
+    })))
+    .then(items => {
+      response.status(201).json({ items });
+    })
+    .catch(error => {
+      response.status(500).json(new Error(`error retrieving items: ${error}`))
+    });
+});
+
+app.post('/api/v1/locations', (request, response) => {
+  const location = request.body;
+  if (!location.id) {
+    return response.status(422)
+      .send({ error: 'must provide location id' });
+  }
+  database('locations').where('id', location.id)
+    .then(location => {
+      response.status(201).json({
+        name: location[0].name,
+        lat: location[0].lat,
+        lng: location[0].lng
+      });
+    })
+    .catch(error => {
+      response.status(500).json(
+        new Error(`error retrieving location: ${error}`)
+      )
+    });
+});
+
 app.listen(3000, () => {
   console.log('Express lostAndFound running on localhost:3000');
-})
+});
