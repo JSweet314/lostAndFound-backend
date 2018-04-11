@@ -73,11 +73,8 @@ app.post('/api/v1/locations/new', (request, response) => {
 
 app.post('/api/v1/items/new', (request, response) => {
   const item = request.body;
-  if (!item.reward) {
-    item.reward = '0';
-  }
   for (let requiredParameter of
-    ['name', 'description', 'location', 'userId', 'status', 'reward', 'date']) {
+    ['name', 'description', 'location', 'userId', 'status', 'date']) {
     if (!item[requiredParameter]) {
       return response.status(422)
         .send({ error: `Expected ${requiredParameter} parameter missing.` });
