@@ -116,7 +116,7 @@ app.post('/api/v1/items', (request, response) => {
       itemId: item.id
     })))
     .then(items => {
-      response.status(201).json({ items });
+      response.status(201).json(items);
     })
     .catch(error => {
       response.status(500).json(new Error(`error retrieving items: ${error}`))
