@@ -4,6 +4,8 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 const app = express();
+
+app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json());
 
 app.get('/api/v1/users', (request, response) => {
