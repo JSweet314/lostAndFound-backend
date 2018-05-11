@@ -146,6 +146,6 @@ app.post('/api/v1/locations', (request, response) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(app.get('port'), () => {
   console.log('Express lostAndFound running on localhost:3000');
 });
