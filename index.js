@@ -84,7 +84,7 @@ app.post('/api/v1/items/new', (request, response) => {
   const formattedItem = {
     name,
     description,
-    reward,
+    reward: reward || null,
     date,
     status,
     user_id: userId,
